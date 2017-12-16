@@ -8,3 +8,13 @@
 
 ---
 
+```javascript
+const lang = {
+    'en': {
+        title: 'I like {span#id.cls1.cls2@content}'
+    },
+    'zh-CN': {
+        title: '我喜欢{span#id.cls1.cls2@content}'
+    }
+}
+```

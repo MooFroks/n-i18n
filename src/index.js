@@ -65,7 +65,7 @@
             this.$localeMsgs = conf.messages[conf.locale];
             this.$mount = document.querySelector(conf.selector) || document.body;
             this.$name = conf.name || 'i18n';
-            this._$i18nDomMap = this.cached();
+            this.$cached = this.cached();
             this.setup();
         }
         // 遍历缓存需要多语言配置的所有DOM
@@ -76,8 +76,7 @@
             // 递归缓存
             (function _trace(parent) {
                 const children = parent.children;
-                const len = children.length;
-                for (let i = 0; i < len; i++) {
+                for (let i = 0, len = children.length; i < len; i++) {
                     const child = children[i];
                     if (child.dataset[name]) {
                         map.set(`${name}#${++tid}`, child);
@@ -93,12 +92,12 @@
         // 初始化，选择执行渲染函数
         setup() {
             const name = this.$name;
-            const map = this._$i18nDomMap;
+            const map = this.$cached;
             const keys = [...map.keys()];
             for (let k of keys) {
                 const v = map.get(k);
-                const i18nStr = v.dataset[name].split(';');
-                i18nStr.forEach(c => {
+                const dataI18n = v.dataset[name].split(';');
+                dataI18n.forEach(c => {
                     const _c = this.parse(c.trim());
                     if (c.includes('$t')) {
                         this.render$t(v, _c);

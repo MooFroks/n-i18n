@@ -1,14 +1,11 @@
 # 简单多语言配置工具库
 
-> 应用场景为中小型活动页面的多语言配置功能，支持文本配置，图片配置，样式配置的多语言配置
-
-- 图片路径配置
-- 样式配置（比如背景图片）
-- 文本配置（具体使用规范参考vue-i18n）
+> i18n是什么？i18n（其来源是英文单词internationalization的首末字符i和n，18为中间的字符数）是“国际化”的简称。
+> 应用场景为中小型活动页面的多语言配置，支持文本配置，图片配置，样式配置的多语言配置
 
 ---
 
-#### 参数配置：
+## Lang配置
 
 ```javascript
 const lang = {
@@ -33,8 +30,31 @@ const lang = {
 };
 ```
 
+## API文档
+
+#### 单项使用
+
+data-i18n="$t()" 文本模式渲染
+data-i18n="$h()" HTML模式渲染
+data-i18n="$c()" 动态替换样式
+data-i18n="$m()" 动态替换图片
+
+#### 混合使用
+
+data-i18n="$c(); $m()" 动态替换样式和图片
+
+#### 注意事项
+
+样式替换前提，对class命名规范约束。
+图片替换前提，对图片路径规范约束。
+
 ```html
 <p data-i18n="$t('title')"></p>
-<p data-i18n="$t('text1')"></p>
-<p data-i18n="$t('text2', {msg: keyword})"></p>
+<p data-i18n="$h('text1')"></p>
+<p data-i18n="$t('text2', {msg: '伟大的渺小~'})"></p>
+<p data-i18n="$t('message.hello')"></p>
+
+<div class="d0-common" data-i18n="$c('d0')"></div>
+
+<img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载" data-i18n="$m('d1'); $c('d1')">
 ```

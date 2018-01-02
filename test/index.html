@@ -6,11 +6,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>n-i18n</title>
+    <style>
+        * {
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            margin: 20px auto;
+        }
+
+        .d0-common {
+            width: 500px;
+            height: 64px;
+            margin-bottom: 10px;
+            background-color: #ddd;
+        }
+        .d1-common {
+            box-sizing: border-box;
+            width: 500px;
+            border: 4px solid #ddd;
+        }
+
+        .en-d0 {
+            background-color: red;
+        }
+        .jp-d0 {
+            background-color: green;
+        }
+        .zh-d0 {
+            background-color: blue;
+        }
+
+        .en-d1 {
+            border: 4px solid red;
+        }
+        .jp-d1 {
+            border: 4px solid green;
+        }
+        .zh-d1 {
+            border: 4px solid blue;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Test i18n</h1>
-    <p></p>
+    <h1>n-i18n</h1>
+
+    <p data-i18n="$t('title')"></p>
+    <p data-i18n="$h('text1')"></p>
+    <p data-i18n="$t('text2', {msg: '伟大的渺小~'})"></p>
+    <p data-i18n="$t('message.hello')"></p>
+
+    <div class="d0-common" data-i18n="$c('d0')"></div>
+
+    <img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载" data-i18n="$m('d1'); $c('d1')">
+
     <script src="../src/index.js"></script>
 </body>
 

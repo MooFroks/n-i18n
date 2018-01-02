@@ -18,6 +18,16 @@
                 var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
                 ele.className = ele.className.replace(reg, ' ');
             }
+        },
+        // 以a.b.c形式获取对象属性
+        getValueBy(obj, keystr) {
+            const keyset = keystr.split('.');
+            for (let i = 0, len = keyset.length; i < len; i++) {
+                if (obj[keyset[i]]) {
+                    obj = obj[keyset[i]];
+                }
+            }
+            return obj;
         }
     };
 
@@ -52,6 +62,7 @@
         init(conf) {
             this.$locale = conf.locale;
             this.$messages = conf.messages;
+            this.$localeMsgs = conf.messages[conf.locale];
             this.$mount = document.querySelector(conf.selector) || document.body;
             this.$name = conf.name || 'i18n';
             this._$i18nDomMap = this.cached();
@@ -66,12 +77,12 @@
             (function _trace(parent) {
                 const children = parent.children;
                 const len = children.length;
-                for(let i = 0; i < len; i++) {
-                    const child =  children[i];
-                    if(child.dataset[name]) {
+                for (let i = 0; i < len; i++) {
+                    const child = children[i];
+                    if (child.dataset[name]) {
                         map.set(`${name}#${++tid}`, child);
                     }
-                    if(child.children.length > 0) {
+                    if (child.children.length > 0) {
                         _trace(child);
                     }
                 }
@@ -84,21 +95,21 @@
             const name = this.$name;
             const map = this._$i18nDomMap;
             const keys = [...map.keys()];
-            for(let k of keys) {
+            for (let k of keys) {
                 const v = map.get(k);
                 const i18nStr = v.dataset[name].split(';');
                 i18nStr.forEach(c => {
                     const _c = this.parse(c.trim());
-                    if(c.includes('$t')){
+                    if (c.includes('$t')) {
                         this.render$t(v, _c);
                     }
-                    if(c.includes('$h')) {
+                    if (c.includes('$h')) {
                         this.render$h(v, _c);
                     }
-                    if(c.includes('$c')) {
+                    if (c.includes('$c')) {
                         this.render$c(v, _c);
                     }
-                    if(c.includes('$m')) {
+                    if (c.includes('$m')) {
                         this.render$m(v, _c);
                     }
                 })
@@ -110,35 +121,66 @@
             const confRe = /(\w+)\:\s*[\'|\"](.+?)[\'|\"]/g;
             let base = '';
             let conf = Object.create(null);
-            
+
             c.replace(baseRe, (match, $1, $2) => {
                 base = $1;
-                if($2) {
+                if ($2) {
                     $2.replace(confRe, (match, $1, $2) => {
-                       conf[$1] = $2; 
+                        conf[$1] = $2;
                     });
                 }
             });
 
             return {
-                base, conf
+                base,
+                conf
             };
         }
+
+        insertMsg(text, data) {
+            const keys = Object.keys(data);
+            for (let i = 0, len = keys.length; i < len; i++) {
+                let keyRe = new RegExp('{' + keys[i] + '}', 'g');
+                text = text.replace(keyRe, data[keys[i]]);
+            }
+            return text;
+        }
+
+        renderMsg(c) {
+            return this.insertMsg(
+                _.getValueBy(this.$localeMsgs, c.base),
+                c.conf
+            );
+        }
+
         // 纯文本渲染
         render$t(v, c) {
-            console.log(c);
+            v.innerText = this.renderMsg(c);
         }
         // HTML渲染
         render$h(v, c) {
-            console.log(c);
+            v.innerHTML = this.renderMsg(c);
         }
         // class渲染
         render$c(v, c) {
-            console.log(c);
+            const locale = this.$locale;
+            const langs = Object.keys(this.$messages);
+            for (let i = 0, len = langs.length; i < len; i++) {
+                if (langs[i] !== locale) {
+                    _.removeClass(v, `${langs[i]}-${c.base}`);
+                }
+            }
+            _.addClass(v, `${locale}-${c.base}`)
         }
         // 图片渲染
         render$m(v, c) {
-            console.log(c);
+            const locale = this.$locale;
+            const langs = Object.keys(this.$messages).join('|');
+            const nameRe = new RegExp('(\/(' + langs + '))?\/[^\/]+(?=\\.[^\/]*$)', 'g');
+            const src = v.getAttribute('src');
+            const path = src.replace(nameRe, `/${locale}/${c.base}`);
+            
+            v.setAttribute('src', path);
         }
     }
 

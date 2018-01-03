@@ -90,15 +90,15 @@
                 message: {
                     hello: 'hello world!'
                 },
-                remain: '{from}: {username} still have {coins} pocket money. and like {like}',
+                remain: '{from}: {username} still have {coins} pocket money.',
                 info: 'school{school}'
             },
             zh: {
                 message: {
                     hello: '你好，世界！'
                 },
-                remain: '{from}: {username}还有{coins}零花钱。还喜欢{like}',
-                info: '学校{school}'
+                remain: '{from}: {username}还有{coins}零花钱。',
+                info: '学校：{school}'
             }
         };
     </script>
@@ -111,15 +111,15 @@
                 user: {
                     name: '大雄',
                     school: {
-                        primary: 'zxx',
-                        senior: 'sd1z', 
+                        primary: '中心小学',
+                        junior: '城区中学', 
                         university: {
-                            major: 'digital media'
+                            major: '数字媒体技术'
                         }
                     }
                 },
                 coins: 100,
-                like: ['jinxiang', 'doraemon']
+                like: ['静香', '哆啦A梦']
             }
         });
 
@@ -129,7 +129,7 @@
 
         setTimeout(() => {
             B.$data.user.name = '小夫';
-            B.$data.user.school.primary = 'what';
+            B.$data.user.school.primary = '城区小学';
         }, 2000);
         
     </script>

@@ -143,6 +143,7 @@
         // 对应观察数据绑定视图
         addDep(path, v) {
             const depKey = '$' + path.replace(/\./g, '_');
+            if(this.$dep[depKey]) return;
             this.$dep[depKey] = v;
             this.addListener(depKey, () => {
                 this.renderBase(v);

@@ -143,10 +143,20 @@
         // 对应观察数据绑定视图
         addDep(path, v) {
             const depKey = '$' + path.replace(/\./g, '_');
-            if(this.$dep[depKey]) return;
-            this.$dep[depKey] = v;
+            const depArr = this.$dep[depKey];
+            if(depArr && depArr.includes(v)) {
+                return;
+            } else {
+                if(!depArr) {
+                    this.$dep[depKey] = [];
+                }
+                this.$dep[depKey].push(v);
+            }
+            const _depArr = this.$dep[depKey];
             this.addListener(depKey, () => {
-                this.renderBase(v);
+                _depArr.forEach(v => {
+                    this.renderBase(v);
+                });
             });
         }
 

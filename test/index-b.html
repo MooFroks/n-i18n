@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="http://static.jsbin.com/images/favicon.png">
+    <title>n-i18n</title>
+    <style>
+        * {
+            margin: 0 auto;
+            text-align: center;
+            font-family: 'Microsoft Yahei';
+            font-size: 16px;
+        }
+
+        h1 {
+            margin: 20px auto;
+            font-size: 3rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        p {
+            width: 800px;
+            margin-bottom: 20px;
+        }
+
+        .d0-common {
+            width: 500px;
+            height: 64px;
+            margin-bottom: 10px;
+            background-color: #ddd;
+        }
+
+        .d1-common {
+            box-sizing: border-box;
+            width: 500px;
+            border: 4px solid #ddd;
+        }
+
+        .en-d0 {
+            background-color: red;
+        }
+
+        .jp-d0 {
+            background-color: green;
+        }
+
+        .zh-d0 {
+            background-color: blue;
+        }
+
+        .en-d1 {
+            border: 4px solid red;
+        }
+
+        .jp-d1 {
+            border: 4px solid green;
+        }
+
+        .zh-d1 {
+            border: 4px solid blue;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>n-i18n</h1>
+
+    <div id="i18n-stage">
+        <p data-i18n="$t('message.hello')"></p>
+        <p data-i18n="$h('remain', {from: '大雄的妈妈', username: @user.name, coins: @coins})"></p>
+
+        <div class="d0-common" data-i18n="$c('d0')"></div>
+
+        <img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载新图片" data-i18n="$m('d1'); $c('d1')">
+    </div>
+
+    <script src="../src/i18n-b.js"></script>
+    <script>
+        const lang = {
+            en: {
+                message: {
+                    hello: 'hello world!'
+                },
+                remain: '{from}: {username} still have {coins} pocket money.'
+            },
+            zh: {
+                message: {
+                    hello: '你好，世界！'
+                },
+                remain: '{from}: {username}还有{coins}零花钱。'
+            }
+        };
+    </script>
+    <script>
+        const B = new Ni18n({
+            locale: 'zh',
+            messages: lang,
+            data: {
+                user: {
+                    name: '大雄'
+                },
+                coins: 100
+            }
+        });
+        
+    </script>
+</body>
+
+</html>

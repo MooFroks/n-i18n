@@ -16,19 +16,27 @@
         },
         removeClass(ele, cls) {
             if (_.hasClass(ele, cls)) {
-                var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+                let reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
                 ele.className = ele.className.replace(reg, ' ');
             }
+        },
+        isPrimitive(value) {
+            return (
+                typeof value === 'string' ||
+                typeof value === 'number' ||
+                typeof value === 'boolean'
+            );
         },
         // 以a.b.c形式获取对象属性
         getValueBy(obj, keystr) {
             const keyset = keystr.split('.');
             for (let i = 0, len = keyset.length; i < len; i++) {
-                if (obj[keyset[i]]) {
-                    obj = obj[keyset[i]];
+                let v = obj[keyset[i]];
+                if (v || _.isPrimitive(v)) {
+                    obj = v;
                 }
             }
-            return obj;
+            return _.isPrimitive(obj) ? obj : '';;
         }
     };
 
@@ -64,9 +72,10 @@
             this.$locale = conf.locale;
             this.$messages = conf.messages;
             this.$localeMsgs = conf.messages[conf.locale];
+            this.$data = conf.data;
             this.$mount = document.querySelector(conf.selector) || document.body;
             this.$name = conf.name || 'i18n';
-            if(!this.$localeMsgs) {
+            if (!this.$localeMsgs) {
                 this._warn(`messages can't find the key '${conf.locale}'`);
                 return;
             }
@@ -121,8 +130,9 @@
         }
         // 解析配置字符串
         parse(c) {
-            const baseRe = /\$[t|h|c|m]\([\'|\"](.*?)[\'|\"]\,*\s*(.*)\)/g;
-            const confRe = /(\w+)\:\s*[\'|\"](.+?)[\'|\"]/g;
+            const baseRe = /\$[t|h|c|m]\(['"](.*?)['"]\,*\s*(.*)\)/g;
+            const confRe = /(\w+)\:\s*([^,}]+)/g;
+            const quoteRe = /^['"]|['"]$/gm;
             let base = '';
             let conf = Object.create(null);
 
@@ -130,7 +140,19 @@
                 base = $1;
                 if ($2) {
                     $2.replace(confRe, (match, $1, $2) => {
-                        conf[$1] = $2;
+                        if (quoteRe.test($2)) {
+                            // 静态字符串
+                            conf[$1] = $2.replace(quoteRe, '');
+                        } else {
+                            if ($2.indexOf('@') === 0) {
+                                // 动态配置数据
+                                $2 = $2.slice(1);
+                                conf[$1] = _.getValueBy(this.$data, $2);
+                            } else {
+                                // 没有标注的情况下以静态处理
+                                conf[$1] = $2;
+                            }
+                        }
                     });
                 }
             });
@@ -183,7 +205,7 @@
             const nameRe = new RegExp('(\/(' + langs + '))?\/[^\/]+(?=\\.[^\/]*$)', 'g');
             const src = v.getAttribute('src');
             const path = src.replace(nameRe, `/${locale}/${c.base}`);
-            
+
             v.setAttribute('src', path);
         }
 

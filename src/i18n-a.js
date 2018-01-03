@@ -16,19 +16,27 @@
         },
         removeClass(ele, cls) {
             if (_.hasClass(ele, cls)) {
-                var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+                let reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
                 ele.className = ele.className.replace(reg, ' ');
             }
+        },
+        isPrimitive(value) {
+            return (
+                typeof value === 'string' ||
+                typeof value === 'number' ||
+                typeof value === 'boolean'
+            );
         },
         // 以a.b.c形式获取对象属性
         getValueBy(obj, keystr) {
             const keyset = keystr.split('.');
             for (let i = 0, len = keyset.length; i < len; i++) {
-                if (obj[keyset[i]]) {
-                    obj = obj[keyset[i]];
+                let v = obj[keyset[i]];
+                if (v || _.isPrimitive(v)) {
+                    obj = v;
                 }
             }
-            return obj;
+            return _.isPrimitive(obj) ? obj : '';;
         }
     };
 
@@ -98,8 +106,8 @@
         }
         // 解析配置字符串
         parse(c) {
-            const baseRe = /\$[t|h|c|m]\([\'|\"](.*?)[\'|\"]\,*\s*(.*)\)/g;
-            const confRe = /(\w+)\:\s*[\'|\"](.+?)[\'|\"]/g;
+            const baseRe = /\$[t|h|c|m]\(['"](.*?)['"]\,*\s*(.*)\)/g;
+            const confRe = /(\w+)\:\s*['"](.+?)['"]/g;
             let base = '';
             let conf = Object.create(null);
 
@@ -162,10 +170,6 @@
             const path = src.replace(nameRe, `/${locale}/${c.base}`);
             
             v.setAttribute('src', path);
-        }
-
-        _log(...args) {
-            console.log('Ni18n Log: [', ...args, ']');
         }
 
         _warn(...args) {

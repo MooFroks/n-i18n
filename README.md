@@ -27,6 +27,7 @@
 ```html
 <p data-i18n="$t('message.hello', {msg: 'world'})"></p>
 ```
+
 ```javascript
 const lang = {
     en: {

@@ -91,7 +91,7 @@
         <img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载新图片" data-i18n="$m('d1'); $c('d1')">
     </div>
 
-    <script src="../src/index.js"></script>
+    <script src="../src/i18n-a.js"></script>
     <script>
         const lang = {
             en: {
@@ -124,17 +124,16 @@
         };
     </script>
     <script>
-        const n = new Ni18n({
+        new Ni18n({
             locale: 'jp',
-            messages: lang,
-            selector: '#i18n-stage'
+            messages: lang
         });
 
         const langkeys = Object.keys(lang);
         let k = 0;
 
         setInterval(() => {
-            const n = new Ni18n({
+            new Ni18n({
                 locale: langkeys[k++ % 3],
                 messages: lang,
                 selector: '#i18n-stage'

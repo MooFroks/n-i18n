@@ -1,6 +1,7 @@
 /**
  * n-i18n
  * Develop by 1kg.
+ * version a: use it in simple situations.
  */
 
 (function (root) {
@@ -31,31 +32,8 @@
         }
     };
 
-    class EventEmitter {
-        constructor() {}
-
-        addListener(name, fn) {
-            let listeners = this._listeners || (this._listeners = {});
-            let handlers = listeners[name] || (listeners[name] = []);
-            handlers.push(fn);
-        }
-
-        removeListener(name, fn) {
-            let listeners = (this._listeners || {})[name];
-            if (listeners) listeners.splice(listeners.indexOf(fn), 1);
-        }
-
-        emit(name, ...args) {
-            let listeners = (this._listeners || {})[name];
-            if (listeners) {
-                listeners.forEach(h => h.apply(this, ...args));
-            }
-        }
-    }
-
-    class Ni18n extends EventEmitter {
+    class Ni18n {
         constructor(conf = {}) {
-            super();
             this.init(conf);
         }
 
@@ -65,6 +43,10 @@
             this.$localeMsgs = conf.messages[conf.locale];
             this.$mount = document.querySelector(conf.selector) || document.body;
             this.$name = conf.name || 'i18n';
+            if(!this.$localeMsgs) {
+                this._warn(`messages can't find the key '${conf.locale}'`);
+                return;
+            }
             this.$cached = this.cached();
             this.setup();
         }
@@ -181,7 +163,15 @@
             
             v.setAttribute('src', path);
         }
+
+        _log(...args) {
+            console.log('Ni18n Log: [', ...args, ']');
+        }
+
+        _warn(...args) {
+            console.warn('Ni18n Warn: [', ...args, ']');
+        }
     }
 
     root.Ni18n = Ni18n;
-}(this))
+}(this));

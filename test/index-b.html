@@ -75,7 +75,8 @@
 
     <div id="i18n-stage">
         <p data-i18n="$t('message.hello')"></p>
-        <p data-i18n="$h('remain', {from: '大雄的妈妈', username: @user.name, coins: @coins})"></p>
+        <p data-i18n="$h('remain', {from: '大雄的妈妈', username: @user.name, coins: @coins, like: @like[0]})"></p>
+        <p data-i18n="$t('info', {school: @user.school.primary})"></p>
 
         <div class="d0-common" data-i18n="$c('d0')"></div>
 
@@ -89,13 +90,15 @@
                 message: {
                     hello: 'hello world!'
                 },
-                remain: '{from}: {username} still have {coins} pocket money.'
+                remain: '{from}: {username} still have {coins} pocket money. and like {like}',
+                info: 'school{school}'
             },
             zh: {
                 message: {
                     hello: '你好，世界！'
                 },
-                remain: '{from}: {username}还有{coins}零花钱。'
+                remain: '{from}: {username}还有{coins}零花钱。还喜欢{like}',
+                info: '学校{school}'
             }
         };
     </script>
@@ -103,13 +106,31 @@
         const B = new Ni18n({
             locale: 'zh',
             messages: lang,
+            selector: '#i18n-stage',
             data: {
                 user: {
-                    name: '大雄'
+                    name: '大雄',
+                    school: {
+                        primary: 'zxx',
+                        senior: 'sd1z', 
+                        university: {
+                            major: 'digital media'
+                        }
+                    }
                 },
-                coins: 100
+                coins: 100,
+                like: ['jinxiang', 'doraemon']
             }
         });
+
+        setInterval(() => {
+            B.$data.coins++;
+        }, 1000);
+
+        setTimeout(() => {
+            B.$data.user.name = '小夫';
+            B.$data.user.school.primary = 'what';
+        }, 2000);
         
     </script>
 </body>

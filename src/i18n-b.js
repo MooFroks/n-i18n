@@ -41,21 +41,23 @@
     };
 
     class EventEmitter {
-        constructor() {}
+        constructor() {
+            this._listeners = {};
+        }
 
         addListener(name, fn) {
-            let listeners = this._listeners || (this._listeners = {});
+            let listeners = this._listeners;
             let handlers = listeners[name] || (listeners[name] = []);
             handlers.push(fn);
         }
 
         removeListener(name, fn) {
-            let listeners = (this._listeners || {})[name];
+            let listeners = this._listeners[name];
             if (listeners) listeners.splice(listeners.indexOf(fn), 1);
         }
 
         emit(name, ...args) {
-            let listeners = (this._listeners || {})[name];
+            let listeners = this._listeners[name];
             if (listeners) {
                 listeners.forEach(h => h.apply(this, ...args));
             }
@@ -80,8 +82,11 @@
                 return;
             }
             this.$cached = this.cached();
+            this.$dep = Object.create(null);
+            this.initObervser();
             this.setup();
         }
+
         // 遍历缓存需要多语言配置的所有DOM
         cached() {
             let name = this.$name;
@@ -103,33 +108,98 @@
 
             return map;
         }
+
         // 初始化，选择执行渲染函数
         setup() {
-            const name = this.$name;
+            const self = this;
             const map = this.$cached;
             const keys = [...map.keys()];
             for (let k of keys) {
                 const v = map.get(k);
-                const dataI18n = v.dataset[name].split(';');
-                dataI18n.forEach(c => {
-                    const _c = this.parse(c.trim());
-                    if (c.includes('$t')) {
-                        this.render$t(v, _c);
-                    }
-                    if (c.includes('$h')) {
-                        this.render$h(v, _c);
-                    }
-                    if (c.includes('$c')) {
-                        this.render$c(v, _c);
-                    }
-                    if (c.includes('$m')) {
-                        this.render$m(v, _c);
-                    }
-                })
+                self.renderBase(v);
             }
         }
+
+        renderBase(v) {
+            const name = this.$name;
+            const dataI18n = v.dataset[name].split(';');
+            dataI18n.forEach(c => {
+                const _c = this.parse(v, c.trim());
+                if (c.includes('$t')) {
+                    this.render$t(v, _c);
+                }
+                if (c.includes('$h')) {
+                    this.render$h(v, _c);
+                }
+                if (c.includes('$c')) {
+                    this.render$c(v, _c);
+                }
+                if (c.includes('$m')) {
+                    this.render$m(v, _c);
+                }
+            });
+        }
+
+        // 对应观察数据绑定视图
+        addDep(path, v) {
+            const depKey = '$' + path.replace(/\./g, '_');
+            this.$dep[depKey] = v;
+            this.addListener(depKey, () => {
+                this.renderBase(v);
+            });
+        }
+
+        // 注册数据观察
+        initObervser() {
+            const self = this;
+            let level = -1,
+                path = [];
+
+            walk(this.$data);
+
+            function walk(obj) {
+                if (typeof obj === 'object') {
+                    level++;
+                    if (Array.isArray(obj)) {
+                        for (let i = 0, len = obj.length; i < len; i++) {
+                            path[level] = i;
+                            defineReactive(obj, i, obj[i], level, path);
+                            walk(obj[i]);
+                        }
+                    } else {
+                        let keys = Object.keys(obj);
+                        for (let key of keys) {
+                            path[level] = key;
+                            defineReactive(obj, key, obj[key], level, path);
+                            walk(obj[key]);
+                        }
+                    }
+                    level--;
+                }
+            }
+
+            function defineReactive(obj, key, val, level, path) {
+                const keyPath = path.slice(0, level + 1);
+
+                Object.defineProperty(obj, key, {
+                    enumerable: true,
+                    configurable: true,
+                    get() {
+                        return val;
+                    },
+                    set: newVal => {
+                        if (val === newVal) return;
+                        val = newVal;
+                        // 修改了数据，此时通知视图更新
+                        const depKey = '$' + keyPath.join('_');
+                        self.emit(depKey);
+                    }
+                });
+            }
+        }
+
         // 解析配置字符串
-        parse(c) {
+        parse(v, c) {
             const baseRe = /\$[t|h|c|m]\(['"](.*?)['"]\,*\s*(.*)\)/g;
             const confRe = /(\w+)\:\s*([^,}]+)/g;
             const quoteRe = /^['"]|['"]$/gm;
@@ -147,6 +217,8 @@
                             if ($2.indexOf('@') === 0) {
                                 // 动态配置数据
                                 $2 = $2.slice(1);
+                                this.addDep($2, v);
+                                // 暂时不处理数组情况
                                 conf[$1] = _.getValueBy(this.$data, $2);
                             } else {
                                 // 没有标注的情况下以静态处理
@@ -183,10 +255,12 @@
         render$t(v, c) {
             v.innerText = this.renderMsg(c);
         }
+
         // HTML渲染
         render$h(v, c) {
             v.innerHTML = this.renderMsg(c);
         }
+
         // class渲染
         render$c(v, c) {
             const locale = this.$locale;
@@ -198,6 +272,7 @@
             }
             _.addClass(v, `${locale}-${c.base}`)
         }
+
         // 图片渲染
         render$m(v, c) {
             const locale = this.$locale;

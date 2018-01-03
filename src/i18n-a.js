@@ -58,6 +58,7 @@
             this.$cached = this.cached();
             this.setup();
         }
+
         // 遍历缓存需要多语言配置的所有DOM
         cached() {
             let name = this.$name;
@@ -79,6 +80,7 @@
 
             return map;
         }
+
         // 初始化，选择执行渲染函数
         setup() {
             const name = this.$name;
@@ -104,6 +106,7 @@
                 })
             }
         }
+
         // 解析配置字符串
         parse(c) {
             const baseRe = /\$[t|h|c|m]\(['"](.*?)['"]\,*\s*(.*)\)/g;
@@ -146,10 +149,12 @@
         render$t(v, c) {
             v.innerText = this.renderMsg(c);
         }
+
         // HTML渲染
         render$h(v, c) {
             v.innerHTML = this.renderMsg(c);
         }
+
         // class渲染
         render$c(v, c) {
             const locale = this.$locale;
@@ -161,6 +166,7 @@
             }
             _.addClass(v, `${locale}-${c.base}`)
         }
+        
         // 图片渲染
         render$m(v, c) {
             const locale = this.$locale;

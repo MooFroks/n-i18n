@@ -22,12 +22,11 @@
 
 - `$m()` 对图片路径规范约束，以locale严格命名为子文件夹下存放所有该语言使用的图片。参见test示例
 
-## 配置使用例子
+## Demo
 
 ```html
 <p data-i18n="$t('message.hello', {msg: 'world'})"></p>
 ```
-
 ```javascript
 const lang = {
     en: {
@@ -36,7 +35,6 @@ const lang = {
         }
     }
 };
-
 new Ni18n({
     locale: 'en',
     messages: lang

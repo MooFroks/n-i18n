@@ -17,12 +17,7 @@ module.exports = {
         loaders: [{
             test: /\.js?$/,
             include: [/src/],
-            use: {
-                loader: 'babel-loader',
-                options: {
-                    presets: ['es2015']
-                }
-            }
+            loader: 'babel-loader?presets[]=es2015'
         }]
     },
     plugins: [

@@ -63,14 +63,14 @@
         cached() {
             let name = this.$name;
             let tid = 0;
-            let map = new Map();
+            let map = Object.create(null);
             // 递归缓存
             (function _trace(parent) {
                 const children = parent.children;
                 for (let i = 0, len = children.length; i < len; i++) {
                     const child = children[i];
                     if (child.dataset[name]) {
-                        map.set(`${name}#${++tid}`, child);
+                        map[`${name}#${++tid}`] = child;
                     }
                     if (child.children.length > 0) {
                         _trace(child);
@@ -85,9 +85,9 @@
         setup() {
             const name = this.$name;
             const map = this.$cached;
-            const keys = [...map.keys()];
+            const keys = Object.keys(map);
             for (let k of keys) {
-                const v = map.get(k);
+                const v = map[k];
                 const dataI18n = v.dataset[name].split(';');
                 dataI18n.forEach(c => {
                     const _c = this.parse(c.trim());

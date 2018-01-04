@@ -83,7 +83,7 @@
     <!-- <script src="../src/i18n-b.js"></script> -->
     <script src="../dist/i18n-b.min.js"></script>
     <script>
-        const lang = {
+        var lang = {
             en: {
                 message: {
                     hello: 'hello world!'
@@ -99,7 +99,7 @@
         };
     </script>
     <script>
-        const Nzh = new Ni18n({
+        var Nzh = new Ni18n({
             locale: 'zh',
             messages: lang,
             selector: '#i18n-stage-zh',
@@ -119,7 +119,7 @@
             Nzh.$data.name = '1kg\'s son';
         }, 5000);
 
-        const Nen = new Ni18n({
+        var Nen = new Ni18n({
             locale: 'en',
             messages: lang,
             selector: '#i18n-stage-en',

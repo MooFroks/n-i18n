@@ -9,14 +9,12 @@
     <title>n-i18n</title>
     <style>
         * {
-            margin: 0 auto;
-            text-align: center;
             font-family: 'Microsoft Yahei';
             font-size: 16px;
         }
 
         h1 {
-            margin: 20px auto;
+            margin: 20px;
             font-size: 3rem;
         }
 
@@ -27,15 +25,14 @@
         }
 
         p {
-            width: 800px;
-            margin-bottom: 20px;
+            width: 400px;
+            text-align: center;
+            line-height: 1.5;
         }
 
-        .d0-common {
-            width: 500px;
-            height: 64px;
-            margin-bottom: 10px;
-            background-color: #ddd;
+        .stage {
+            float: left;
+            margin: 10px;
         }
 
         .d1-common {
@@ -71,16 +68,15 @@
 </head>
 
 <body>
-    <h1>n-i18n</h1>
-
-    <div id="i18n-stage">
+    <div id="i18n-stage-zh" class="stage">
         <p data-i18n="$t('message.hello')"></p>
-        <p data-i18n="$h('remain', {from: '大雄的妈妈', username: @user.name, coins: @coins)"></p>
-        <p data-i18n="$h('remain', {from: '大雄的妈妈', username: @user.name, coins: @coins)"></p>
-        <p data-i18n="$t('info', {school: @user.school.primary})"></p>
+        <p data-i18n="$h('pocket', {from: '支付宝', username: name, pocket: msg.pocket})"></p>
+        <img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载新图片" data-i18n="$m('d1'); $c('d1')">
+    </div>
 
-        <div class="d0-common" data-i18n="$c('d0')"></div>
-
+    <div id="i18n-stage-en" class="stage">
+        <p data-i18n="$t('message.hello')"></p>
+        <p data-i18n="$h('pocket', {from: 'alipay', username: name, pocket: msg.pocket})"></p>
         <img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载新图片" data-i18n="$m('d1'); $c('d1')">
     </div>
 
@@ -91,47 +87,48 @@
                 message: {
                     hello: 'hello world!'
                 },
-                remain: '{from}: {username} still have {coins} pocket money.',
-                info: 'school{school}'
+                pocket: '{from}: {username} still have {pocket} pocket money.'
             },
             zh: {
                 message: {
                     hello: '你好，世界！'
                 },
-                remain: '{from}: {username}还有{coins}零花钱。',
-                info: '学校：{school}'
+                pocket: '{from}: {username}还有{pocket}零花钱。'
             }
         };
     </script>
     <script>
-        const B = new Ni18n({
+        const Bzh = new Ni18n({
             locale: 'zh',
             messages: lang,
-            selector: '#i18n-stage',
+            selector: '#i18n-stage-zh',
             data: {
-                user: {
-                    name: '大雄',
-                    school: {
-                        primary: '中心小学',
-                        junior: '城区中学', 
-                        university: {
-                            major: '数字媒体技术'
-                        }
-                    }
-                },
-                coins: 100,
-                like: ['静香', '哆啦A梦']
+                name: '1kg',
+                msg: {
+                    pocket: 100
+                }
             }
         });
 
         setInterval(() => {
-            B.$data.coins++;
+            Bzh.$data.msg.pocket++;
         }, 1000);
 
         setTimeout(() => {
-            B.$data.user.name = '小夫';
-            B.$data.user.school.primary = '城区小学';
-        }, 2000);
+            Bzh.$data.name = '1kg\'s son';
+        }, 5000);
+
+        const Ben = new Ni18n({
+            locale: 'en',
+            messages: lang,
+            selector: '#i18n-stage-en',
+            data: {
+                name: '1kg',
+                msg: {
+                    pocket: 100
+                }
+            }
+        });
         
     </script>
 </body>

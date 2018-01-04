@@ -142,12 +142,12 @@
 
         // 对应观察数据绑定视图
         addDep(path, v) {
-            const depKey = '$' + path.replace(/\./g, '_');
+            const depKey = '$' + path.replace(/\.|\[|\]/g, '_');
             const depArr = this.$dep[depKey];
-            if(depArr && depArr.includes(v)) {
+            if (depArr && depArr.includes(v)) {
                 return;
             } else {
-                if(!depArr) {
+                if (!depArr) {
                     this.$dep[depKey] = [];
                 }
                 this.$dep[depKey].push(v);
@@ -228,13 +228,10 @@
                             if ($2.indexOf('@') === 0) {
                                 // 动态配置数据
                                 $2 = $2.slice(1);
-                                this.addDep($2, v);
-                                // 暂时不处理数组情况
-                                conf[$1] = _.getValueBy(this.$data, $2);
-                            } else {
-                                // 没有标注的情况下以静态处理
-                                conf[$1] = $2;
                             }
+                            this.addDep($2, v);
+                            // 暂时不处理数组情况
+                            conf[$1] = _.getValueBy(this.$data, $2);
                         }
                     });
                 }

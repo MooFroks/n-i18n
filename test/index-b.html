@@ -76,7 +76,7 @@
 
     <div id="i18n-stage-en" class="stage">
         <p data-i18n="$t('message.hello')"></p>
-        <p data-i18n="$h('pocket', {from: 'alipay', username: name, pocket: msg.pocket})"></p>
+        <p data-i18n="$h('pocket', {from: 'Alipay', username: name, pocket: msg.pocket})"></p>
         <img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载新图片" data-i18n="$m('d1'); $c('d1')">
     </div>
 
@@ -98,7 +98,7 @@
         };
     </script>
     <script>
-        const Bzh = new Ni18n({
+        const Nzh = new Ni18n({
             locale: 'zh',
             messages: lang,
             selector: '#i18n-stage-zh',
@@ -111,14 +111,14 @@
         });
 
         setInterval(() => {
-            Bzh.$data.msg.pocket++;
+            Nzh.$data.msg.pocket++;
         }, 1000);
 
         setTimeout(() => {
-            Bzh.$data.name = '1kg\'s son';
+            Nzh.$data.name = '1kg\'s son';
         }, 5000);
 
-        const Ben = new Ni18n({
+        const Nen = new Ni18n({
             locale: 'en',
             messages: lang,
             selector: '#i18n-stage-en',

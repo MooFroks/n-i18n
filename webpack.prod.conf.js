@@ -11,7 +11,7 @@ module.exports = {
     output: {
         path: buildPath,
         publicPath: '/',
-        filename: `[name].min.js`
+        filename: '[name].min.js'
     },
     module: {
         loaders: [{

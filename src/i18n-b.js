@@ -222,17 +222,15 @@
                 base = $1;
                 if ($2) {
                     $2.replace(confRe, (match, $1, $2) => {
-                        if (quoteRe.test($2)) {
-                            // 静态字符串
-                            conf[$1] = $2.replace(quoteRe, '');
-                        } else {
-                            if ($2.indexOf('@') === 0) {
-                                // 动态配置数据
-                                $2 = $2.slice(1);
-                            }
+                        if ($2.indexOf('@') === 0 && !quoteRe.test($2)) {
+                            // 动态配置数据
+                            $2 = $2.slice(1);
                             this.addDep($2, v);
                             // 暂时不处理数组情况
                             conf[$1] = _.getValueBy(this.$data, $2);
+                        } else {
+                            // 静态字符串
+                            conf[$1] = $2.replace(quoteRe, '');
                         }
                     });
                 }

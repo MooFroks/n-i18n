@@ -134,7 +134,7 @@
         var langkeys = Object.keys(lang);
         var k = 0;
 
-        setInterval(() => {
+        setInterval(function() {
             new Ni18n({
                 locale: langkeys[k++ % 3],
                 messages: lang,

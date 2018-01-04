@@ -70,13 +70,13 @@
 <body>
     <div id="i18n-stage-zh" class="stage">
         <p data-i18n="$t('message.hello')"></p>
-        <p data-i18n="$h('pocket', {from: '支付宝', username: name, pocket: msg.pocket})"></p>
+        <p data-i18n="$h('pocket', {from: '支付宝', username: @name, pocket: @msg.pocket})"></p>
         <img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载新图片" data-i18n="$m('d1'); $c('d1')">
     </div>
 
     <div id="i18n-stage-en" class="stage">
         <p data-i18n="$t('message.hello')"></p>
-        <p data-i18n="$h('pocket', {from: 'Alipay', username: name, pocket: msg.pocket})"></p>
+        <p data-i18n="$h('pocket', {from: 'Alipay', username: @name, pocket: @msg.pocket})"></p>
         <img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载新图片" data-i18n="$m('d1'); $c('d1')">
     </div>
 
@@ -111,11 +111,11 @@
             }
         });
 
-        setInterval(() => {
+        setInterval(function() {
             Nzh.$data.msg.pocket++;
         }, 1000);
 
-        setTimeout(() => {
+        setTimeout(function() {
             Nzh.$data.name = '1kg\'s son';
         }, 5000);
 

@@ -54,8 +54,10 @@ new Ni18n({
 
 #### Demo
 
+如果是动态依赖的数据，需要在value前面加上@引导符指示。否则会默认处理为字符串
+
 ```html
-<p data-i18n="$h('pocket', {from: '支付宝', username: name, pocket: msg.pocket})"></p>
+<p data-i18n="$h('pocket', {from: '支付宝', username: @name, pocket: @msg.pocket})"></p>
 ```
 ```javascript
 const lang = {

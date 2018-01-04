@@ -1,0 +1,36 @@
+{
+  "name": "n-i18n",
+  "version": "1.0.0",
+  "description": "i18n tool",
+  "main": "src/i18n-a.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gotjoy/n-i18n.git"
+  },
+  "keywords": [
+    "i18n"
+  ],
+  "author": "1kg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gotjoy/n-i18n/issues"
+  },
+  "homepage": "https://github.com/Gotjoy/n-i18n#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.17",
+    "webpack": "^3.10.0",
+    "yargs": "^10.0.3"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0"
+  }
+}

@@ -166,7 +166,7 @@
             }
             _.addClass(v, `${locale}-${c.base}`)
         }
-        
+
         // 图片渲染
         render$m(v, c) {
             const locale = this.$locale;
@@ -184,4 +184,4 @@
     }
 
     root.Ni18n = Ni18n;
-}(this));
+}(window));

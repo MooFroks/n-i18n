@@ -163,6 +163,7 @@
         // 注册数据观察
         initObervser() {
             const self = this;
+            // level作用为记录变量所处层级，用以生成合理的对象路径
             let level = -1,
                 path = [];
 
@@ -302,4 +303,4 @@
     }
 
     root.Ni18n = Ni18n;
-}(this));
+}(window));

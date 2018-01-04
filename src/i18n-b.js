@@ -144,7 +144,7 @@
         addDep(path, v) {
             const depKey = '$' + path.replace(/\.|\[|\]/g, '_');
             const depArr = this.$dep[depKey];
-            if (depArr && depArr.includes(v)) {
+            if (depArr && depArr.indexOf(v) > -1) {
                 return;
             } else {
                 if (!depArr) {

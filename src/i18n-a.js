@@ -88,7 +88,7 @@
             const keys = Object.keys(map);
             for (let k of keys) {
                 const v = map[k];
-                const dataI18n = v.dataset[name].split(';');
+                const dataI18n = v.dataset[name].split(/;(?:\s*\$[t|h|c|m])/g);
                 dataI18n.forEach(c => {
                     const _c = this.parse(c.trim());
                     if (c.includes('$t')) {

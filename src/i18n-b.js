@@ -122,7 +122,7 @@
 
         renderBase(v) {
             const name = this.$name;
-            const dataI18n = v.dataset[name].split(';');
+            const dataI18n = v.dataset[name].split(/;(?:\s*\$[t|h|c|m])/g);
             dataI18n.forEach(c => {
                 const _c = this.parse(v, c.trim());
                 if (c.includes('$t')) {

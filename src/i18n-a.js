@@ -103,7 +103,7 @@
                     if (c.includes('$m')) {
                         this.render$m(v, _c);
                     }
-                })
+                });
             }
         }
 

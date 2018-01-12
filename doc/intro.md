@@ -27,7 +27,7 @@
 
 代码参考：[https://github.com/Gotjoy/n-i18n/blob/master/src/i18n-a.js](https://github.com/Gotjoy/n-i18n/blob/master/src/i18n-a.js)
 
-###### 1. 如何准确寻找到有指定dataset的所有DOM节点？
+#### 1. 如何准确寻找到有指定dataset的所有DOM节点？
 
 利用递归一层层的遍历所有子节点，符合要求的就保存在一个map映射里。
 
@@ -46,7 +46,7 @@
 }(this.$mount));
 ```
 
-###### 2. 巧妙利用正则解析dataset中的多样配置
+#### 2. 巧妙利用正则解析dataset中的多样配置
 
 比如说我会存在以下四种配置，那么该如何去解析data-i18n里面的配置文本从而拿到自己感兴趣的信息呢？
 
@@ -99,7 +99,7 @@ const lang = {
 
 配置文本中{msg}的替换利用动态生成正则`new RegExp('{' + keys[i] + '}', 'g');`全局替换即可。
 
-###### 3. 多种模式如何准确渲染
+#### 3. 多种模式如何准确渲染
 
 多种模式混合使用的时候，如何区分并准确渲染？这个只需要合理断开配置文本，并分别运用在该节点上即可。需要注意的是，断开配置时应当判断分号是否不在文本里，否则容易误伤友军。
 
@@ -133,8 +133,6 @@ dataI18n.forEach(c => {
 如何做到这一点。利用`Object.defineProperty`JavaScript的这个API到了数据的，遍历配置的中data，并使用Object.defineProperty观察。重点是在里面的setter。当修改data的某个值时，会出发对应的setter，并发射信号通知DOM节点去更新。
 
 代码参考：[https://github.com/Gotjoy/n-i18n/blob/master/src/i18n-b.js](https://github.com/Gotjoy/n-i18n/blob/master/src/i18n-b.js)
-
-----------
 
 ## 唠叨几句
 

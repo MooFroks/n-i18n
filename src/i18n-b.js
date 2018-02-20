@@ -36,7 +36,7 @@
                     obj = v;
                 }
             }
-            return _.isPrimitive(obj) ? obj : '';;
+            return _.isPrimitive(obj) ? obj : '';
         }
     };
 

@@ -2,136 +2,136 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" href="http://static.jsbin.com/images/favicon.png">
-    <title>n-i18n</title>
-    <style>
-        * {
-            font-family: 'Microsoft Yahei';
-            font-size: 16px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" href="http://static.jsbin.com/images/favicon.png">
+  <title>n-i18n</title>
+  <style>
+    * {
+      font-family: 'Microsoft Yahei';
+      font-size: 16px;
+    }
 
-        h1 {
-            margin: 20px;
-            font-size: 3rem;
-        }
+    h1 {
+      margin: 20px;
+      font-size: 3rem;
+    }
 
-        ul {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 20px;
-        }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
 
-        p {
-            width: 400px;
-            text-align: center;
-            line-height: 1.5;
-        }
+    p {
+      width: 400px;
+      text-align: center;
+      line-height: 1.5;
+    }
 
-        .stage {
-            float: left;
-            margin: 10px;
-        }
+    .stage {
+      float: left;
+      margin: 10px;
+    }
 
-        .d1-common {
-            box-sizing: border-box;
-            width: 500px;
-            border: 4px solid #ddd;
-        }
+    .d1-common {
+      box-sizing: border-box;
+      width: 500px;
+      border: 4px solid #ddd;
+    }
 
-        .en-d0 {
-            background-color: red;
-        }
+    .en-d0 {
+      background-color: red;
+    }
 
-        .jp-d0 {
-            background-color: green;
-        }
+    .jp-d0 {
+      background-color: green;
+    }
 
-        .zh-d0 {
-            background-color: blue;
-        }
+    .zh-d0 {
+      background-color: blue;
+    }
 
-        .en-d1 {
-            border: 4px solid red;
-        }
+    .en-d1 {
+      border: 4px solid red;
+    }
 
-        .jp-d1 {
-            border: 4px solid green;
-        }
+    .jp-d1 {
+      border: 4px solid green;
+    }
 
-        .zh-d1 {
-            border: 4px solid blue;
-        }
-    </style>
+    .zh-d1 {
+      border: 4px solid blue;
+    }
+  </style>
 </head>
 
 <body>
-    <div id="i18n-stage-zh" class="stage">
-        <p data-i18n="$t('message.hello')"></p>
-        <p data-i18n="$h('pocket', {from: '支付宝', username: @name, pocket: @msg.pocket})"></p>
-        <img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载新图片" data-i18n="$m('d1'); $c('d1')">
-    </div>
+  <div id="i18n-stage-zh" class="stage">
+    <p data-i18n="$t('message.hello')"></p>
+    <p data-i18n="$h('pocket', {from: '支付宝', username: @name, pocket: @msg.pocket})"></p>
+    <img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载新图片" data-i18n="$m('d1'); $c('d1')">
+  </div>
 
-    <div id="i18n-stage-en" class="stage">
-        <p data-i18n="$t('message.hello')"></p>
-        <p data-i18n="$h('pocket', {from: 'Alipay', username: @name, pocket: @msg.pocket})"></p>
-        <img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载新图片" data-i18n="$m('d1'); $c('d1')">
-    </div>
+  <div id="i18n-stage-en" class="stage">
+    <p data-i18n="$t('message.hello')"></p>
+    <p data-i18n="$h('pocket', {from: 'Alipay', username: @name, pocket: @msg.pocket})"></p>
+    <img class="d1-common" src="./images/holder.jpg" alt="先占位后替换加载新图片" data-i18n="$m('d1'); $c('d1')">
+  </div>
 
-    <!-- <script src="../src/i18n-b.js"></script> -->
-    <script src="../dist/i18n-b.min.js"></script>
-    <script>
-        var lang = {
-            en: {
-                message: {
-                    hello: 'hello world!'
-                },
-                pocket: '{from}: {username} still have {pocket} pocket money.'
-            },
-            zh: {
-                message: {
-                    hello: '你好，世界！'
-                },
-                pocket: '{from}: {username}还有{pocket}零花钱。'
-            }
-        };
-    </script>
-    <script>
-        var Nzh = new Ni18n({
-            locale: 'zh',
-            messages: lang,
-            selector: '#i18n-stage-zh',
-            data: {
-                name: '1kg',
-                msg: {
-                    pocket: 100
-                }
-            }
-        });
+  <!-- <script src="../src/i18n-b.js"></script> -->
+  <script src="../dist/i18n-b.min.js"></script>
+  <script>
+    var lang = {
+      en: {
+        message: {
+          hello: 'hello world!'
+        },
+        pocket: '{from}: {username} still have {pocket} pocket money.'
+      },
+      zh: {
+        message: {
+          hello: '你好，世界！'
+        },
+        pocket: '{from}: {username}还有{pocket}零花钱。'
+      }
+    };
+  </script>
+  <script>
+    var Nzh = new Ni18n({
+      locale: 'zh',
+      messages: lang,
+      selector: '#i18n-stage-zh',
+      data: {
+        name: '1kg',
+        msg: {
+          pocket: 100
+        }
+      }
+    });
 
-        setInterval(function() {
-            Nzh.$data.msg.pocket++;
-        }, 1000);
+    setInterval(function () {
+      Nzh.$data.msg.pocket++;
+    }, 1000);
 
-        setTimeout(function() {
-            Nzh.$data.name = '1kg\'s son';
-        }, 5000);
+    setTimeout(function () {
+      Nzh.$data.name = '1kg\'s son';
+    }, 5000);
 
-        var Nen = new Ni18n({
-            locale: 'en',
-            messages: lang,
-            selector: '#i18n-stage-en',
-            data: {
-                name: '1kg',
-                msg: {
-                    pocket: 100
-                }
-            }
-        });
-        
-    </script>
+    var Nen = new Ni18n({
+      locale: 'en',
+      messages: lang,
+      selector: '#i18n-stage-en',
+      data: {
+        name: '1kg',
+        msg: {
+          pocket: 100
+        }
+      }
+    });
+
+  </script>
 </body>
 
 </html>
